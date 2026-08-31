@@ -60,11 +60,14 @@ jobs:
 
       - name: Deploy with Helm
         env:
-          IMAGE_TAG: ${{ needs.build.outputs.image_sha }}
+          IMAGE_URI: ${{ needs.build.outputs.image_sha }}
         run: |
-          helm upgrade backend-api ./helm/backend-api \
+          helm upgrade myapp ./helm/myapp \
             --reuse-values \
-            --set image.name="$IMAGE_TAG" \
+            --set backend.image.repository="${IMAGE_URI%:*}" \
+            --set backend.image.tag="${IMAGE_URI##*:}" \
+            --set backend.probes.health=/app/health \
+            --set backend.probes.ready=/app/ready \
             --wait \
             --timeout 4m
 

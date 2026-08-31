@@ -16,7 +16,14 @@ import {ReadinessService} from "./readiness.service";
     MetricsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
+      // В кластере чарт отдаёт дискретные DB_* через ConfigMap/Secret;
+      // DATABASE_URL остаётся для локального запуска и имеет приоритет.
       url: process.env.DATABASE_URL,
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT ?? 5432),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: false,
     }),

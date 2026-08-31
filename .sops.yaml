@@ -1,3 +1,8 @@
 creation_rules:
   - path_regex: helm/.*/secrets.*\.yaml$
-    age: age1cletq4h7lntlu2eclkf37pe4uk68lngu40kp43mnqql8d4xh9vhqdrrdjx
+    # Несколько получателей — файл можно расшифровать ЛЮБЫМ из приватных ключей.
+    # ВАЖНО: правки здесь влияют только на НОВЫЕ шифрования. Чтобы добавить ключ
+    # к уже зашифрованным файлам — sops updatekeys helm/*/secrets.yaml
+    age: >-
+      age1pr5g055yvw9e7q7nczde5zm7phhktjr9prrf2swgnrg8q3t7myjqdzng4a,
+      age1j2h8nq026r8c5hrghq3xv6as97ts7z8q8l4xp6l7sjdgfkdmr94qja2jql

@@ -18,8 +18,8 @@ backend:
   port: 3000
   replicaCount: 1          # single-node: 2 реплики сядут на ту же ноду + не влезают в 2 CPU с ArgoCD
   probes:
-    health: /health        # у backend НЕТ префикса /api — роуты в корне
-    ready: /ready
+    health: /app/health    # роуты backend живут под префиксом /app (@Controller('app'))
+    ready: /app/ready
   resources:
     requests:
       cpu: "100m"
@@ -68,7 +68,7 @@ appConfig:
   maxTodos: 5
 
 ingress:
-  host: plikap.com
+  host: aws.plikap.com
   tlsSecret: app-tls
   clusterIssuer: letsencrypt-prod
 
