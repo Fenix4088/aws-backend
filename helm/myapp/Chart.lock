@@ -1,0 +1,6 @@
+dependencies:
+- name: common-chart
+  repository: oci://ghcr.io/fenix4088
+  version: 0.1.1
+digest: sha256:d7bbc3e9eed71b639a559f32f0d9cd800679aaedb6b3e0fb9109575e9a518c8b
+generated: "2026-08-08T18:40:45.554038+02:00"
