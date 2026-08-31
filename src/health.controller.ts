@@ -6,8 +6,11 @@ export class HealthController {
   constructor(private readonly readinessService: ReadinessService) {}
 
   @Get('/health')
-  health(): string {
-    return 'success'
+  health() {
+    // APP_VERSION приходит из Helm как тег образа `sha-<git sha>`;
+    // префикс срезаем, чтобы version был чистым sha коммита.
+    const version = (process.env.APP_VERSION ?? 'unknown').replace(/^sha-/, '');
+    return { status: 'success', version };
   }
 
   @Get('/ready')
