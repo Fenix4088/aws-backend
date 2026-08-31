@@ -19,21 +19,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      # Экшен сам получает токен и логинит docker — ID аккаунта брать неоткуда не нужно.
       - name: Вход в ECR
-        run: |
-          aws ecr get-login-password --region ${{ vars.AWS_REGION }} | \
-            docker login --username AWS --password-stdin \
-            ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and Push образа
         id: build-push
         env:
-          IMAGE_SHA: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/devops-backend-api:sha-${{ github.sha }}
-          IMAGE_LATEST: ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/devops-backend-api:latest
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
         run: |
-          docker build -t $IMAGE_SHA -t $IMAGE_LATEST .
-          docker push $IMAGE_SHA
-          docker push $IMAGE_LATEST
+          IMAGE_SHA="$REGISTRY/devops-backend-api:sha-${{ github.sha }}"
+          IMAGE_LATEST="$REGISTRY/devops-backend-api:latest"
+          docker build -t "$IMAGE_SHA" -t "$IMAGE_LATEST" .
+          docker push "$IMAGE_SHA"
+          docker push "$IMAGE_LATEST"
           echo "image_sha=$IMAGE_SHA" >> $GITHUB_OUTPUT
 
   deploy:
