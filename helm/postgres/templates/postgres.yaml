@@ -66,6 +66,10 @@ spec:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
+        # Явный класс: без него PVC уходит в default-класс кластера. Встроенный gp2
+        # EKS-а сидит на in-tree провижинере kubernetes.io/aws-ebs, удалённом из k8s —
+        # том просто завис бы в Pending. См. helm/ebs-storageclass.yaml.
+        storageClassName: ebs-sc
         resources:
           requests:
             storage: {{ .Values.storage }}

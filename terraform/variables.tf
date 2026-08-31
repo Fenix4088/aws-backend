@@ -19,7 +19,7 @@ variable "cluster_version" {
 variable "node_instance_type" {
   description = "Тип EC2 инстанса для нод"
   type        = string
-  default     = "t3.medium"
+  default     = "c7i-flex.large"
 }
  
 variable "node_desired_capacity" {
